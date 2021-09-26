@@ -18,7 +18,7 @@ This image was created for lab setups where the need to verify email messages ar
     - pause the flow
     - search through the flow
     - highlight multiple rows
-- SMTP messages are persistant if you map the directory `/var/mail`
+- SMTP messages are persistent if you map the directory `/var/mail`
 
 ## Sample `config.txt` file
 
