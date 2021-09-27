@@ -4,6 +4,7 @@ cp template/webadmin.html.template webadmin.html
 sed -i "s/IPADDR/$IPADDR:$HTTPPORT/g" webadmin.html
 docker run -dit --rm \
     --name smtp \
+    -h $HOSTNAME \
     -p $IPADDR:25:25 \
     -p $IPADDR:$HTTPPORT:$HTTPPORT \
     -v smtp:/var/mail \

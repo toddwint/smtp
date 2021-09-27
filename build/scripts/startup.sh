@@ -5,6 +5,7 @@ ln -fs /usr/share/zoneinfo/$TZ /etc/localtime
 dpkg-reconfigure --frontend noninteractive tzdata
 
 echo $HOSTNAME > /etc/hostname
+
 postconf -e "mydomain = $DOMAINNAME"
 postconf -e "myhostname = $HOSTNAME"
 postconf -e 'mydestination = $myhostname, $myhostname.$mydomain, localhost.$mydomain, localhost, $mydomain'

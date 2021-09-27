@@ -6,14 +6,14 @@
 
 <https://github.com/toddwint/smtp>
 
-`smtp` server docker image for simple lab smtp testing.
+SMTP server docker image for simple lab smtp testing.
 
 This image was created for lab setups where the need to verify email messages are being sent.
 
 ## Features
 
-- Receive smtp messages from clients.
-- View smtp messages in a web browser ([frontail](https://github.com/mthenw/frontail))
+- Receive SMTP messages from clients.
+- View SMTP messages in a web browser ([frontail](https://github.com/mthenw/frontail))
     - tail the file
     - pause the flow
     - search through the flow
@@ -39,6 +39,7 @@ cp template/webadmin.html.template webadmin.html
 sed -i "s/IPADDR/$IPADDR:$HTTPPORT/g" webadmin.html
 docker run -dit --rm \
     --name smtp \
+    -h $HOSTNAME
     -p $IPADDR:25:25 \
     -p $IPADDR:$HTTPPORT:$HTTPPORT \
     -v smtp:/var/mail \
@@ -59,7 +60,8 @@ See my github page (referenced above).
 
 Open the `webadmin.html` file.
 
-Or just type in your browser `http://localhost` or the IP you set in the config.  
+Or just type in your browser `http://<ip_address>:<port>`
+
 
 ## Issues?
 
