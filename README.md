@@ -8,7 +8,7 @@
 
 SMTP server docker image for simple lab smtp testing.
 
-This image was created for lab setups where the need to verify email messages are being sent.
+This image was created for lab setups where there is a need to verify email messages are being sent.
 
 ## Features
 
