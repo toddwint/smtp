@@ -1,30 +1,27 @@
-FROM ubuntu:focal
+FROM toddwint/mybaseimage
 COPY scripts /opt/smtp/scripts
-EXPOSE 25 9001
 ENV DEBIAN_FRONTEND=noninteractive \
     TZ=UTC \
-    HTTPPORT=9001 \
+    DOMAINNAME=test.lab \
+    HTTPPORT1=8080 \
+    HTTPPORT2=8081 \
+    HTTPPORT3=8082 \
+    HTTPPORT4=8083 \
     HOSTNAME=mailsrvr \
-    DOMAINNAME=test.lab 
+    APPNAME=smtp
 RUN apt-get update \
     && \
     apt-get install -y \
-    tzdata \
-    iproute2 \
-    wget \
     postfix \
     && \
     echo $HOSTNAME > /etc/hostname \
     && \
-    wget -q https://github.com/mthenw/frontail/releases/download/v4.9.1/frontail-linux -O /usr/local/bin/frontail \
+    cd /opt \
     && \
-    chmod 755 /usr/local/bin/frontail \
-    && \
-    apt-get remove -y \
-    wget \
+    rm -rf /opt/mybaseimage \
     && \
     apt-get autoremove -y \
     && \
     rm -rf /var/lib/apt/lists/*
-WORKDIR /opt/smtp/
+WORKDIR /opt/smtp/scripts
 CMD ["/opt/smtp/scripts/startup.sh"]
