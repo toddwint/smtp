@@ -207,7 +207,6 @@ source &quot;$(dirname &quot;$(realpath $0)&quot;)&quot;/config.txt
 docker run -dit \
     --name &quot;$HOSTNAME&quot; \
     -h &quot;$HOSTNAME&quot; \
-    -v &quot;$HOSTNAME&quot;:/opt/&quot;$APPNAME&quot;/logs \
     -p $IPADDR:25:25 \
     -p &quot;$IPADDR&quot;:&quot;$HTTPPORT1&quot;:&quot;$HTTPPORT1&quot; \
     -p &quot;$IPADDR&quot;:&quot;$HTTPPORT2&quot;:&quot;$HTTPPORT2&quot; \

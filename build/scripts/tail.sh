@@ -3,4 +3,4 @@ echo '
   Welcome to the '"$APPNAME"' docker image.
 '
 sleep 1s
-tail -n 500 -f /var/mail/root
+tail -n 500 -f /opt/"$APPNAME"/logs/"$APPNAME".log

@@ -10,16 +10,7 @@ echo $HOSTNAME > /etc/hostname
 gunzip /usr/local/bin/frontail.gz
 gunzip /usr/local/bin/tailon.gz
 
-# Create logs folder and init files
-mkdir -p /opt/"$APPNAME"/logs
-touch /opt/"$APPNAME"/logs/"$APPNAME".log
-truncate -s 0 /opt/"$APPNAME"/logs/"$APPNAME".log
-echo "$(date -Is) [Start of $APPNAME log file]" >> /opt/"$APPNAME"/logs/"$APPNAME".log
-
 # Configure mail server settings
-if [ ! -f /var/mail/root ]; then
-    touch /var/mail/root
-fi
 postconf -e "mydomain = $DOMAINNAME"
 postconf -e "myhostname = $HOSTNAME"
 postconf -e 'mydestination = $myhostname, $myhostname.$mydomain, localhost.$mydomain, localhost, $mydomain'
@@ -27,11 +18,26 @@ postconf -e "mynetworks = 0.0.0.0/0 [::]"
 echo "@$DOMAINNAME root" > /etc/postfix/virtual
 postmap /etc/postfix/virtual
 postconf -e "virtual_alias_maps = hash:/etc/postfix/virtual"
+if [ ! -f /var/mail/root ]; then
+    touch /var/mail/root
+fi
 
 # Start mailserver service
 service postfix stop
 service postfix start
 service postfix status
+
+# Link the log to the app log
+mkdir -p /opt/"$APPNAME"/logs
+ln -s /var/mail/root /opt/"$APPNAME"/logs/"$APPNAME".log
+# Didn't like the hard link
+#ln /var/mail/root /opt/"$APPNAME"/logs/"$APPNAME".log
+
+# Create logs folder and init files
+mkdir -p /opt/"$APPNAME"/logs
+touch /opt/"$APPNAME"/logs/"$APPNAME".log
+truncate -s 0 /opt/"$APPNAME"/logs/"$APPNAME".log
+echo "$(date -Is) [Start of $APPNAME log file]" >> /opt/"$APPNAME"/logs/"$APPNAME".log
 
 # Start web interface
 NLINES=1000
@@ -46,10 +52,10 @@ sed -Ei 's/tail -n 500/tail -n '"$NLINES"'/' /opt/"$APPNAME"/scripts/tmux.sh
 nohup ttyd -p "$HTTPPORT2" -t titleFixed="${APPNAME}|${APPNAME}.log" -t fontSize=18 -t 'theme={"foreground":"black","background":"white", "selection":"red"}' /opt/"$APPNAME"/scripts/tmux.sh >> /opt/"$APPNAME"/logs/ttyd2.log 2>&1 &
 # ttyd tmux without color
 #nohup ttyd -p "$HTTPPORT2" -t titleFixed="${APPNAME}|${APPNAME}.log" -T xterm-mono -t fontSize=18 -t 'theme={"foreground":"black","background":"white", "selection":"red"}' /opt/"$APPNAME"/scripts/tmux.sh >> /opt/"$APPNAME"/logs/ttyd2.log 2>&1 &
-nohup frontail -n "$NLINES" -p "$HTTPPORT3" /var/mail/root >> /opt/"$APPNAME"/logs/frontail.log 2>&1 &
+nohup frontail -n "$NLINES" -p "$HTTPPORT3" /opt/"$APPNAME"/logs/"$APPNAME".log >> /opt/"$APPNAME"/logs/frontail.log 2>&1 &
 sed -Ei 's/\$lines/'"$NLINES"'/' /opt/"$APPNAME"/scripts/tailon.toml
 sed -Ei '/^listen-addr = /c listen-addr = [":'"$HTTPPORT4"'"]' /opt/"$APPNAME"/scripts/tailon.toml
-nohup tailon -c /opt/"$APPNAME"/scripts/tailon.toml /var/mail/root /opt/"$APPNAME"/logs/ttyd1.log /opt/"$APPNAME"/logs/ttyd2.log /opt/"$APPNAME"/logs/frontail.log /opt/"$APPNAME"/logs/tailon.log >> /opt/"$APPNAME"/logs/tailon.log 2>&1 &
+nohup tailon -c /opt/"$APPNAME"/scripts/tailon.toml /opt/"$APPNAME"/logs/"$APPNAME".log /opt/"$APPNAME"/logs/ttyd1.log /opt/"$APPNAME"/logs/ttyd2.log /opt/"$APPNAME"/logs/frontail.log /opt/"$APPNAME"/logs/tailon.log >> /opt/"$APPNAME"/logs/tailon.log 2>&1 &
 
 # Keep docker running
 bash
