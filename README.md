@@ -14,6 +14,7 @@ GitHub: <https://github.com/toddwint/smtp>
 - Ubuntu base image
 - Plus:
   - postfix
+  - mailutils
   - tmux
   - python3-minimal
   - iproute2
