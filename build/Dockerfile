@@ -1,5 +1,5 @@
 FROM toddwint/mybaseimage
-COPY scripts /opt/smtp/scripts
+COPY app /opt/smtp
 ENV DEBIAN_FRONTEND=noninteractive \
     TZ=UTC \
     DOMAINNAME=test.lab \
@@ -17,12 +17,8 @@ RUN apt-get update \
     && \
     echo $HOSTNAME > /etc/hostname \
     && \
-    cd /opt \
-    && \
-    rm -rf /opt/mybaseimage \
-    && \
     apt-get autoremove -y \
     && \
     rm -rf /var/lib/apt/lists/*
-WORKDIR /opt/smtp/scripts
+WORKDIR /opt/smtp/debug
 CMD ["/opt/smtp/scripts/startup.sh"]
