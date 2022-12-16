@@ -9,6 +9,15 @@ Docker Hub: <https://hub.docker.com/r/toddwint/smtp>
 GitHub: <https://github.com/toddwint/smtp>
 
 
+## Overview
+
+- Download the docker image and github files.
+- Configure the settings in `run/config.txt`.
+- Start a new container by running `run/create_container.sh`.
+- Send SMTP messages to the docker IP.
+- Open the file webadmin.html to view messages in a web browser.
+
+
 ## Features
 
 - Ubuntu base image
