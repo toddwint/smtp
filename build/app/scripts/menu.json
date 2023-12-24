@@ -1,0 +1,102 @@
+[
+ [
+  "Launch tmux",
+  "/opt/smtp/scripts/tmux.sh"
+ ],
+ [
+  "Search logs",
+  [
+   [
+    "smtp log (/var/mail/root)",
+    "tail -F -n +1 /opt/smtp/logs/smtp.log | fzf --tac --no-sort"
+   ]
+  ]
+ ],
+ [
+  "View logs",
+  [
+   [
+    "smtp log (/var/mail/root)",
+    "more /opt/smtp/logs/smtp.log"
+   ]
+  ]
+ ],
+ [
+  "View configuration",
+  [
+   [
+    "smtp configuration",
+    "postconf -x | more"
+   ],
+   [
+    "smtp domain configuration",
+    "postconf -x mydomain | more"
+   ],
+   [
+    "smtp hostname configuration",
+    "postconf -x myhostname | more"
+   ],
+   [
+    "smtp destination configuration",
+    "postconf -x mydestination | more"
+   ],
+   [
+    "smtp networks configuration",
+    "postconf -x mynetworks | more"
+   ],
+   [
+    "smtp alias map configuration",
+    "more /etc/postfix/virtual"
+   ],
+   [
+    "IP addresses",
+    "ip addr show | more"
+   ],
+   [
+    "Routing table",
+    "ip route show | more"
+   ],
+   [
+    "ARP or NDISC cache",
+    "ip neighbor show | more"
+   ],
+   [
+    "Network devices",
+    "ip link show | more"
+   ]
+  ]
+ ],
+ [
+  "Debug scripts",
+  [
+   [
+    "Send test email",
+    "/opt/smtp/debug/send_test_mail.sh"
+   ],
+   [
+    "Show processes",
+    "ps ax | more"
+   ],
+   [
+    "Show sockets",
+    "ss --all --numeric --processes | more"
+   ],
+   [
+    "ttyd1 log",
+    "more /opt/smtp/logs/ttyd1.log"
+   ],
+   [
+    "ttyd2 log",
+    "more /opt/smtp/logs/ttyd2.log"
+   ],
+   [
+    "frontail log",
+    "more /opt/smtp/logs/frontail.log"
+   ],
+   [
+    "tailon log",
+    "more /opt/smtp/logs/tailon.log"
+   ]
+  ]
+ ]
+]
